@@ -59,11 +59,18 @@ $(document).ready(function() {
     result = fancyTemplate({people : {moe : "Moe", larry : "Larry", curly : "Curly"}});
     equals(result, "<ul><li>Moe</li><li>Larry</li><li>Curly</li></ul>", 'can run arbitrary javascript in templates');
 
+    var noInterpolateTemplate = _.template("<div><p>Just some text. Hey, I know this is silly but it aids consistency.</p></div>");
+    result = noInterpolateTemplate();
+    equals(result, "<div><p>Just some text. Hey, I know this is silly but it aids consistency.</p></div>");
+
     var quoteTemplate = _.template("It's its, not it's");
     equals(quoteTemplate({}), "It's its, not it's");
 
     var quoteInStatementAndBody = _.template("<% if(foo == 'bar'){ %>Statement quotes and 'quotes'.<% } %>");
     equals(quoteInStatementAndBody({foo: "bar"}), "Statement quotes and 'quotes'.");
+
+    var withNewlinesAndTabs = _.template('This\n\t\tis: <%= x %>.\n\tok.\nend.');
+    equals(withNewlinesAndTabs({x: 'that'}), 'This\n\t\tis: that.\n\tok.\nend.');
 
     _.templateSettings = {
       start       : '{{',
